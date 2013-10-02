@@ -22,7 +22,8 @@ ${CURL_CMD} "${RH_URL}" \
 	| sort -u \
 	| grep -v "CVE-[0-2]00[0-9]" > rh-cves.txt
 
-comm -23 rh-cves.txt victims-cves.txt > cves.missing
+comm -23 rh-cves.txt victims-cves.txt > cves.missing.txt
+comm -23 cves.missing.txt cves.ignore > cves.missing
 
 echo "Cleaning up temporary files ..."
 rm *.txt
