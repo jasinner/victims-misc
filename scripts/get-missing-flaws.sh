@@ -4,7 +4,7 @@
 # DB, and prints a list of all those missing from the DB to cves.missing
 
 RH_URL="https://www.redhat.com/security/data/metrics/rhsamapcpe.txt"
-VICTIMS_URL="https://www.victi.ms/service/update/1970-01-01T00:00:00/?fields=cves"
+VICTIMS_URL="https://www.victi.ms/service/v2/update/1970-01-01T00:00:00/?fields=cves"
 
 CURL_CMD="curl --insecure --silent"
 
