@@ -4,14 +4,15 @@
 # DB, and prints a list of all those missing from the DB to cves.missing
 
 RH_URL="https://www.redhat.com/security/data/metrics/rhsamapcpe.txt"
-VICTIMS_URL="https://www.victi.ms/service/v2/update/1970-01-01T00:00:00/?fields=cves"
 
 CURL_CMD="curl --insecure --silent"
 
 echo "Fetching unique CVEs from Victi.ms database ..."
-${CURL_CMD} "${VICTIMS_URL}" \
-	| grep -oh "CVE-[0-9]*-[0-9]*" \
-	| sort -u > victims-cves.txt
+git clone --depth 1 git@github.com:victims/victims-cve-db.git
+
+find victims-cve-db/database/java/ -name *.yaml -exec grep cve: {} \; | 
+	awk '{print "CVE-"$2}' | 
+	sort -u > victims-cves.txt
 
 
 echo "Fetching unique CVEs from Red Hat RHSA metrics ..."
@@ -26,4 +27,4 @@ comm -23 rh-cves.txt victims-cves.txt > cves.missing.txt
 comm -23 cves.missing.txt cves.ignore > cves.missing
 
 echo "Cleaning up temporary files ..."
-rm *.txt
+rm -rf *.txt victims-cve-db/
